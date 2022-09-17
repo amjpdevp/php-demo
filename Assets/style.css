@@ -1,0 +1,14 @@
+
+.main{
+    display: flex;
+    flex-flow: column;
+    justify-items: center;
+    align-items: center;
+    
+  }
+
+  button{
+    max-width: 500px;
+    font-size: large;
+  }
+ 

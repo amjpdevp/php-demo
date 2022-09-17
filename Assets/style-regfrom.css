@@ -1,0 +1,11 @@
+.container{
+    margin-top: 8%;
+    width: 400px;
+    border: ridge 1.5px rgb(0, 0, 0);
+    padding: 20px;
+}
+
+
+button{
+    font-weight: bolder;
+}
