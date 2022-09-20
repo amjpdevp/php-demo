@@ -86,7 +86,7 @@ if (isset($_POST['submit'])) :
          //Fetch related data from entities table
 
         $result->close();
-        $sql = "SELECT * FROM users WHERE user_id='$data[0]' ";
+        $sql = "SELECT * FROM entities WHERE user_id='$data[0]' ";
         $result = mysqli_query($conn, $sql);
         $data = mysqli_fetch_row($result);
         $_SESSION["entityid"] = $data[0];

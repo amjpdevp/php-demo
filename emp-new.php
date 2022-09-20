@@ -6,7 +6,7 @@ if (isset($_SESSION["userid"])) {
         header("Location: /login.php");
     }
 
-    
+
 ?>
 
 
@@ -20,7 +20,7 @@ if (isset($_SESSION["userid"])) {
         <title>Admin Dashboard</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-        <!-- <link rel="stylesheet" href="Assets/dashboard.css"> -->
+
     </head>
 
     <body>
@@ -35,13 +35,13 @@ if (isset($_SESSION["userid"])) {
                     <div class="collapse navbar-collapse" id="navbarText">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Home</a>
+                                <a class="nav-link" href="dashboard.php">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="#">Add Employee</a>
+                                <a class="nav-link active">Add Employee</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">manage Employee</a>
+                                <a class="nav-link" href="manage-emp.php">manage Employee</a>
                             </li>
                         </ul>
                         <ul class="navbar-nav">
@@ -62,8 +62,10 @@ if (isset($_SESSION["userid"])) {
                     </div>
                 </div>
             </nav>
+            <div class="alert alert-success d-none" id="add_green" role="alert">
+                <strong>Success!</strong> Your Record has been Added Successfully
 
-
+            </div>
         </header>
         <div class="container w-50 border my-5">
             <h2 class="my-3">Add new employee</h2>
@@ -130,46 +132,7 @@ if (isset($_SESSION["userid"])) {
                         </label>
                     </div>
                 </div>
-                <!-- <div class="form-group d-flex align-items-center">
-                    <p>Profile :</p>
-                    <div class="form-check d-flex align-items-center mx-3">
-                        <input class="form-check-input mx-2" type="radio" name="profile" value="/Assets/Profile/p1.png" id="flexprofileDefault1">
-                        <label class="form-check-label" for="flexprofileDefault1">
-                            <img src="/Assets/Profile/p1.png" height="50" width="50" alt="Profile Picture" srcset="">
-                        </label>
-                    </div>
-                    <div class="form-check d-flex align-items-center mx-3">
-                        <input class="form-check-input mx-2" type="radio" name="profile" value="/Assets/Profile/p2.png" id="flexprofileDefault2">
-                        <label class="form-check-label" for="flexprofileDefault2">
-                            <img src="/Assets/Profile/p2.png" height="50" width="50" alt="Profile Picture" srcset="">
-                        </label>
-                    </div>
-                    <div class="form-check d-flex align-items-center mx-3">
-                        <input class="form-check-input mx-2" type="radio" name="profile" value="/Assets/Profile/p3.png" id="flexprofileDefault3">
-                        <label class="form-check-label" for="flexprofileDefault3">
-                            <img src="/Assets/Profile/p3.png" height="50" width="50" alt="Profile Picture" srcset="">
-                        </label>
-                    </div>
-                    <div class="form-check d-flex align-items-center mx-3">
-                        <input class="form-check-input mx-2" type="radio" name="profile" value="/Assets/Profile/p4.png" id="flexprofileDefault4">
-                        <label class="form-check-label" for="flexprofileDefault4">
-                            <img src="/Assets/Profile/p4.png" height="50" width="50" alt="Profile Picture" srcset="">
-                        </label>
-                    </div>
-                    <div class="form-check d-flex align-items-center mx-3">
-                        <input class="form-check-input mx-2" type="radio" name="profile" value="/Assets/Profile/p5.png" id="flexprofileDefault5">
-                        <label class="form-check-label" for="flexprofileDefault5">
-                            <img src="/Assets/Profile/p5.png" height="50" width="50" alt="Profile Picture" srcset="">
-                        </label>
-                    </div>
-                    <div class="form-check d-flex align-items-center mx-3">
-                        <input class="form-check-input mx-2" type="radio" name="profile" value="/Assets/Profile/p6.png" id="flexprofileDefault6">
-                        <label class="form-check-label" for="flexprofileDefault6">
-                            <img src="/Assets/Profile/p6.png" height="50" width="50" alt="Profile Picture" srcset="">
-                        </label>
-                    </div>
 
-                </div>  -->
                 <div class="input-group my-4 d-flex align-items-center">
                     <div class="input-group-prepend">
                         <label class="input-group-text" for="inputGroupSelect01">Profile Picture</label>
@@ -198,17 +161,21 @@ if (isset($_SESSION["userid"])) {
                         <span class="input-group-text">Salary : $</span>
                     </div>
                     <input type="number" class="form-control" name="salary" aria-label="Amount (to the nearest dollar)">
-                   
+
                 </div>
                 <button type="submit" class="my-2 btn btn-primary" value="submit" name="submit">Add</button>
                 <div class="alert alert-danger" style="display: none;" id="nof"></div>
             </form>
         </div>
-
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+        <script>
+            var nof = document.getElementById('nof');
+            var aleart = document.getElementById('add_green')
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     </body>
 
-    </html>
+
     <?php
 
     //Error Fucntion
@@ -230,7 +197,37 @@ if (isset($_SESSION["userid"])) {
         require('dbconfig.php');
         //testing Area
 
+       //profile Picture validation 
 
+       if(isset($_FILES['profilepicture'])){
+        $errors= array();
+        $file_name = $_FILES['profilepicture']['name'];
+        $file_size =$_FILES['profilepicture']['size'];
+        $file_tmp =$_FILES['profilepicture']['tmp_name'];
+        $file_type=$_FILES['profilepicture']['type'];
+        $file_ext=strtolower(end(explode('.',$_FILES['profilepicture']['name'])));
+        
+        $extensions= array("jpeg","jpg","png");
+        
+        if(in_array($file_ext,$extensions)=== false){
+           error("extension not allowed, please choose a JPEG or PNG file.");
+           die;
+        }
+        
+        if($file_size > 1000000){
+           error("File size must be less than 1 MB Size");
+           die();
+        }
+        
+        if(empty($errors)==true){
+           move_uploaded_file($file_tmp,"Assets/Profile/".$file_name);
+          
+        }else{
+           error("Something Wrong");
+           die();
+        }
+     }
+     $profilepath = $file_name;
       
 
 
@@ -301,9 +298,10 @@ if (isset($_SESSION["userid"])) {
             error("Date Of Birth is Invalid");
             die();
         }
-        $date = date_create($date);
-      
-        
+
+
+        //STR_TO_DATE($est_date , '%d-%m-%Y')
+
         //Permission convert Into JSON 
 
         $permission = array();
@@ -320,43 +318,7 @@ if (isset($_SESSION["userid"])) {
 
         $permission = json_encode($permission);
 
-        //profile Picture validation 
-
-        $profile = "Assets/Profile/";
-        $target_file = $target_dir . basename($_FILES["profilepicture"]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        //   // Check if image file is a actual image or fake image
-       
-        $check = getimagesize($_FILES["profilepicture"]["tmp_name"]);
-        if ($check !== false) {
-            $uploadOk = 1;
-        } else {
-            error("Profile is must an image");
-            $uploadOk = 0;
-            die;
-        }
-
-        if ($_FILES["profilepicture"]["size"] > 1000000) {
-            error("Profile picture size must be less than 1 MB");
-            $uploadOk = 0;
-            die;
-        }
-
-        if (
-            $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-        ) {
-            error("In Profile pictures  only JPG, JPEG & PNG files are allowed.");
-            die;
-        }
-
-        if (move_uploaded_file($_FILES["profilepicture"]["tmp_name"], $target_file)) {
-            $profilepath = $target_file;
-        } else {
-            error("Sorry, there was an error in uploading Employee profile picture");
-            die;
-        }
-
+ 
         //end of profile validation
 
 
@@ -365,28 +327,24 @@ if (isset($_SESSION["userid"])) {
         $department = $_POST['department'];
         $entityid = $_SESSION['entityid'];
         $gender = $_POST['gender'];
-        $salary = $_POST['salary'];
+        $amount = (int)$_POST['salary'];
 
-        /*
+       
     
-    first_name	varchar(255)
-	last_name	varchar(255)
-	email	varchar(255)
-	passwords	varchar(255)
-	gender	varchar(255)
-	DOB	date
-	permissions	varchar(300)
-	picture	varchar(255)
-	created_at	timestamp
-	updated_at	timestamp
-
-
-        */
         //Database uploading 
+        $insertdate = date("Y-m-d", strtotime($_POST['dob']));
+        
+        // error($insertdate);
+        $updated_at = date("Y-m-d H:i:s");
 
-            //Employee Data
-        $query1 = $conn->prepare("INSERT INTO employees (entity_id,first_name,last_name,email,passwords,gender,DOB,permissions,picture) VALUES ($entityid, ?, ?, ?,?,'$gender','',?,'$profilepath')");
-        $query1->bind_param("sssss", $fname, $lname, $email, $password,$permission);
+
+        //  $insertdate = DATE_FORMAT(,format);
+        // die(gettype($_POST['dob']));    
+
+
+        //Employee Data
+        $query1 = $conn->prepare("INSERT INTO employees (entity_id,first_name,last_name,email,passwords,gender,DOB,permissions,picture,updated_at) VALUES ($entityid, ?, ?, ?,?,'$gender','$insertdate',?,'$profilepath','$updated_at')");
+        $query1->bind_param("sssss", $fname, $lname, $email, $password, $permission);
 
         $query1->execute();
 
@@ -396,40 +354,44 @@ if (isset($_SESSION["userid"])) {
             die();
         }
         $query1->store_result();
-            
-            //Department Data
-        $sql = "SELECT employee_id FROM employees ORDER BY department_id DESC LIMIT 1";
+
+        //Department Data
+        $sql = "SELECT employee_id FROM employees ORDER BY employee_id DESC LIMIT 1";
         $result = mysqli_query($conn, $sql);
         $table = mysqli_fetch_row($result);
         $result->close();
         $employee_id = $table[0];
-        
-        $result = mysqli_query($conn, "SELECT department_id FROM departments WHERE department_name='$department' AND entity_id=$entityid ");
 
-        $var1 = array();
-        if(mysqli_fetch_row($result)){
-        $table = mysqli_fetch_row($result);
-        $result->close();
-        $department_id = $table[0];
-        }
-        else{
-            $query2 = "INSERT INTO departments (department_name, entity_id) VALUES ('$department', $entityid)";
-            $result = mysqli_query($conn, $query2);
-            $result->close();
-            $sql = "SELECT department_id FROM departments WHERE department_name='$department' AND entity_id=$entityid LIMIT 1";
-            $result = mysqli_query($conn, $sql);
+        $result = mysqli_query($conn, "SELECT department_id FROM departments WHERE department_name='$department' AND entity_id=$entityid");
+
+
+        if (mysqli_num_rows($result) > 0) {
+
             $table = mysqli_fetch_row($result);
             $department_id = $table[0];
-            $result->close();
         }
+        // die(echo($table[0]));
 
+        else {
+            $query2 = "INSERT INTO departments (department_name, entity_id) VALUES ('$department', $entityid)";
+            $result = mysqli_query($conn, $query2);
+
+            $sql = "SELECT department_id FROM departments WHERE department_name='$department' AND entity_id=$entityid ";
+            $result = mysqli_query($conn, $sql);
+            $table = mysqli_fetch_row($result);
+            $department_id = (int)$table[0];
+        }
+        // Dapeartment id Inserting into Emplotyee Table
+        
+        $sql = " UPDATE employees SET department_id=$department_id WHERE employee_id=$employee_id";
+        $result = mysqli_query($conn, $sql);
+       
         //Salaries insert 
 
-        $query3 = "INSERT INTO salaries (amount, employee_id, department_id) VALUES ($amount, $employee_id, $department_id)";
+        $query3 = "INSERT INTO salaries (amount,employee_id,department_id,updated_at) VALUES ($amount,$employee_id,$department_id,'$updated_at')";
         $result = mysqli_query($conn, $query3);
-        $result->close();
-        
-        
+
+        echo "<script>aleart.classList.remove('d-none')</script>";
 
 
 
@@ -442,3 +404,5 @@ if (isset($_SESSION["userid"])) {
     header("Location: /login.php");
 }
 ?>
+
+    </html>
