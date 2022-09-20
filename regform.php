@@ -76,6 +76,7 @@
 <!-- PHP Bakcend -->
 <?php
 if (isset($_POST['submit'])) :
+
   require('dbconfig.php');
   $valid = 0;
   $name = filter_var($_POST['name'], 513);
@@ -100,7 +101,7 @@ if (isset($_POST['submit'])) :
 
   if ($password == $_POST['cpassword']) {
 
-    echo "<br>";
+
     if (strlen($password) >= 6) {
       $password = md5($password);
       $valid += 1;
@@ -167,38 +168,37 @@ if (isset($_POST['submit'])) :
       $valid += 1;
     }
   } //end_if
-  
+
   // Wihtout Error Valid Return here '6' ;  
 
-  if($valid == 6){
+  if ($valid == 6) {
     $isadmin = 1;
     $query1 = $conn->prepare("INSERT INTO users (name, passwords,is_Admin,email) VALUES (?, ?, ?, ?)");
-    $query1->bind_param("ssis", $name, $password,$isadmin,$email);    
+    $query1->bind_param("ssis", $name, $password, $isadmin, $email);
     $query1->execute();
-    if($conn->error){
+    if ($conn->error) {
       error("Something Went Wrong");
       die();
     }
     $sql = "SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1";
-    $result = mysqli_query($conn,$sql);
+    $result = mysqli_query($conn, $sql);
     $table = mysqli_fetch_row($result);
     $query2 = $conn->prepare("INSERT INTO entities (entity_name, email,user_id) VALUES (?, ?, ?)");
-    $query2->bind_param("ssi",$entity,$eemail,$table[0]);
+    $query2->bind_param("ssi", $entity, $eemail, $table[0]);
     $query2->execute();
-    
-    if(mysqli_error($conn)){
+
+    if (mysqli_error($conn)) {
       error("Something Went Wrong");
       die();
     }
 
     header("Location: /login.php");
-
-  } else{
+  } else {
     error("Something Went Wrong");
     die();
   }
 
-  
+
 
 endif;
 

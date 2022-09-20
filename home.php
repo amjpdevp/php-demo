@@ -16,7 +16,7 @@
         <h2>Welcome To Task Management system</h2>
         <div class="d-flex flex-column">
         <button type="button" class="mt-5 btn btn-light" onclick='reg();'>Registre Yourself <i class="fa-solid fa-arrow-right"></i></button>
-        <button type="button" class="my-2 btn btn-light" onclick='login();'>USer login <i class="fa-solid fa-arrow-right"></i></button>
+        <button type="button" class="my-2 btn btn-light" onclick='login();'>User login <i class="fa-solid fa-arrow-right"></i></button>
         <button type="button" class="btn btn-light" onclick='login();'>Employee login <i class="fa-solid fa-arrow-right"></i></button>        
         </div>
     </div>

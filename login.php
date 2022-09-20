@@ -49,39 +49,62 @@ function error($message)
 ?>
 
 <?php
-if(isset($_POST['submit'])):
-    if($_POST['email'] == "" || $_POST['password'] == ""){
+if (isset($_POST['submit'])) :
+    if ($_POST['email'] == "" || $_POST['password'] == "") {
         error("email or password can\'t be blank");
         die();
     }
-require('dbconfig.php');
+    require('dbconfig.php');
 
     $res1 = $conn->prepare("SELECT email,passwords FROM users WHERE email=? AND passwords=?");
-    $res1->bind_param("ss",$email,$password);
+    $res1->bind_param("ss", $email, $password);
     $email = $_POST['email'];
     $password = md5($_POST['password']);
     $res1->execute();
 
 
-   
-    
 
-    if($res1->fetch()){
-        error("Admin login");
-    }
-    else {
+
+
+    if ($res1->fetch()) {
+
+        //Fetch related data from user table
+
+        $res1->close();
+        $sql = "SELECT * FROM users WHERE email='$email' ";
+        $result = mysqli_query($conn, $sql);
+        $data = mysqli_fetch_row($result);
+
+        //Session Starting
+
+        session_start();
+        $_SESSION["email"] = $data[6];
+        $_SESSION['userid'] = $data[0];
+        $_SESSION['username'] = $data[1];
+        $_SESSION['isadmin'] = $data[3];
+
+         //Fetch related data from entities table
+
+        $result->close();
+        $sql = "SELECT * FROM users WHERE user_id='$data[0]' ";
+        $result = mysqli_query($conn, $sql);
+        $data = mysqli_fetch_row($result);
+        $_SESSION["entityid"] = $data[0];
+        $_SESSION['entityname'] = $data[1];
+
+        header("Location: /dashboard.php");
+
+    } else {
         unset($res1);
         $res2 = $conn->prepare("SELECT email,passwords FROM employees WHERE email=? AND passwords=?");
-        $res2->bind_param("ss",$email,$password);
+        $res2->bind_param("ss", $email, $password);
         $res2->execute();
 
-        if($res2->fetch()){
+        if ($res2->fetch()) {
             error("Employee login");
-        }else{
+        } else {
             error("Login fail");
         }
-    
-
     }
 
 
