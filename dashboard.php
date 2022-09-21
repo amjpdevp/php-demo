@@ -5,9 +5,62 @@ if (isset($_SESSION["userid"])) {
         header("Location: /login.php");
     }
 
-
+require('dbconfig.php');
 ?>
+<?php       
+            $entityid = $_SESSION["entityid"]; 
+            $entityname = $_SESSION["entityname"];
+            $sql = "SELECT COUNT(entity_id)
+            FROM tasks
+            WHERE entity_id=$entityid GROUP BY entity_id ";
 
+            $result2 = mysqli_query($conn, $sql);
+            $table = mysqli_fetch_row($result2);
+            if(isset($table[0])){
+            $no_Task = $table[0];
+            }else{
+            $no_Task = 0;
+            }
+
+            
+            $sql = "SELECT COUNT(employee_id)
+            FROM employees
+            WHERE entity_id=$entityid GROUP BY entity_id ";
+
+            $result2 = mysqli_query($conn, $sql);
+            $table = mysqli_fetch_row($result2);
+            if(isset($table[0])){
+            $no_emp = $table[0];
+            }else{
+            $no_emp = 0;
+            }
+
+
+            $sql = "SELECT COUNT(department_id)
+            FROM departments
+            WHERE entity_id=$entityid GROUP BY entity_id ";
+
+            $result2 = mysqli_query($conn, $sql);
+            $table = mysqli_fetch_row($result2);
+            if(isset($table[0])){
+            $no_dep = $table[0];
+            }else{
+            $no_dep = 0;
+            }
+
+            $sql = "SELECT SUM(amount)
+            FROM salaries
+            WHERE entity_id=$entityid GROUP BY entity_id ";
+
+            $result2 = mysqli_query($conn, $sql);
+            $table = mysqli_fetch_row($result2);
+            if(isset($table[0])){
+            $sum_sal = $table[0];
+            }else{
+            $sum_sal = 0;
+            }
+
+ ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +115,7 @@ if (isset($_SESSION["userid"])) {
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a id="logout" class="dropdown-item" href="#">Log Out</a></li>
+                                <li><a id="logout" class="dropdown-item" >Log Out</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -82,7 +135,7 @@ if (isset($_SESSION["userid"])) {
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Employees </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $no_emp;  ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-user fa-2x text-gray-300"></i>
@@ -101,7 +154,7 @@ if (isset($_SESSION["userid"])) {
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Task Assigned</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">120</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $no_Task;  ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -121,7 +174,7 @@ if (isset($_SESSION["userid"])) {
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">5</div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $no_dep;  ?></div>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +194,7 @@ if (isset($_SESSION["userid"])) {
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 Total salaries</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $sum_sal;  ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>

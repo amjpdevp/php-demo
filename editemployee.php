@@ -53,12 +53,13 @@ if(mysqli_num_rows($result) > 0) {
         $last_name = $data['last_name'];
        
         $email = $data['email'];
-        $password = $data['passwords'];
+        $password_old = $data['passwords'];
         $gender  = $data['gender'];
         $DOB = $data['DOB'];
         $permissions = $data['permissions'];
         $picture = $data['picture']; 
         $daprtment_id  = (int)$data['department_id'];
+        $email_old = $data['email'];
 
     }
 }else{
@@ -82,6 +83,7 @@ if(mysqli_num_rows($result) > 0) {
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="Assets/style.css">
 
 </head>
 
@@ -114,11 +116,12 @@ if(mysqli_num_rows($result) > 0) {
             </div>
         </nav>
         <div class="alert alert-success d-none " id="add_green" role="alert">
-            <button type="button" id="goback" class="btn btn-light me-5"><i class="fa-solid fa-left-long me-2"></i>Go to
-                Employee Manage</button><strong>Success!</strong> Your Record has been Updated Successfully
+            <button type="button" id="goback" class="btn btn-light me-5"><i class="fa-solid fa-left-long me-2"></i>
+                Employee List</button><strong>Success!</strong> Your Record has been Updated Successfully
         </div>
     </header>
-    <div class="container w-50 border my-5">
+
+    <div id="main-div" class="container  w-50 border my-5">
         <h2 class="my-3">Edit Details of
             <?php echo $first_name; ?>
         </h2>
@@ -261,23 +264,35 @@ if(mysqli_num_rows($result) > 0) {
                     aria-label="Amount (to the nearest dollar)">
 
             </div>
-            <button type="submit" class="my-2 btn btn-primary" value="submit" name="submit">Add</button>
+            <button type="submit" class="my-2 btn btn-primary" value="submit" name="submit">Update</button>
+
             <div class="alert alert-danger" style="display: none;" id="nof"></div>
         </form>
+    </div>
+    <div id="s-box" class="container d-flex justify-content-center align-items-center d-none w-50  my-5">
+        <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_s2lryxtd.json"  background="transparent"  class="align-text-top" speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player>
+        <div class="align-middle">
+            <h3>Changes Saved</h3>
+            
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script>
         var nof = document.getElementById('nof');
         var aleart = document.getElementById('add_green');
+        var mbox = document.getElementById('main-div');
+        var sbox = document.getElementById('s-box');
 
         $("#goback").click(function () {
             window.location.href = "/manage-emp.php";
         })
     </script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
         crossorigin="anonymous"></script>
+    
 </body>
 
 
@@ -300,20 +315,21 @@ if(mysqli_num_rows($result) > 0) {
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") :
         require('dbconfig.php');
+
         //testing Area
 
+      
+        //testing Area
 
-
-
-        $fname = filter_var($_POST['fname'], 513);
-        $lname = filter_var($_POST['lname'], 513);
+        $fname_new = filter_var($_POST['fname'], 513);
+        $lname_new = filter_var($_POST['lname'], 513);
         $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'];
         $valid = 0;
 
         //Name Validation
 
-        if ($fname == "" || $lname == "") {
+        if ($fname_new == "" || $lname_new == "") {
             error("Name is must Required");
             die();
         }
@@ -333,7 +349,7 @@ if(mysqli_num_rows($result) > 0) {
         //Password Encrypt & Validate
         if ($password != "") {
         if (strlen($password) >= 6) {
-            $password = md5($password);
+            $password_new = md5($password);
             $valid += 1;
         } else {
             error("Password Must be at least 6 Character");
@@ -341,9 +357,13 @@ if(mysqli_num_rows($result) > 0) {
         }
     }
 
-        //Email check from database
-
-        if ($_POST['email'] != "") {
+        //Email Validate from DB
+        if($email == ""){
+            error("Email is empty");
+            die();
+        }
+        
+        if ($email != $email_old) {
 
             $result = mysqli_query($conn, "SELECT email FROM employees");
 
@@ -363,19 +383,21 @@ if(mysqli_num_rows($result) > 0) {
         //DOB valdiation
 
         date_default_timezone_set("Asia/Calcutta");
-        $today = date("d/m/Y");
-        $dob = date_create($_POST['dob']);
 
-        $date = date_format($dob, "d/m/Y");
 
-        if ($date < $today) {
-        } else {
-            error("Date Of Birth is Invalid");
-            die();
+        //Dob validator 2
+
+        $date_now = new DateTime();
+        $date2    = new DateTime($_POST['dob']);
+
+        
+        if ($date_now < $date2) {
+        error("Invalid DOB");
+        die;
         }
-
-
-        //STR_TO_DATE($est_date , '%d-%m-%Y')
+        
+        $new_dob = $_POST['dob'];
+     
 
         //Permission convert Into JSON 
 
@@ -394,6 +416,7 @@ if(mysqli_num_rows($result) > 0) {
         $permission = json_encode($permission);
 
         //profile Picture validation 
+
         if($profile!=$_FILES["profilepicture"]["name"] || $_FILES["profilepicture"]["name"] ){
         
             if(isset($_FILES['profilepicture'])){
@@ -424,82 +447,140 @@ if(mysqli_num_rows($result) > 0) {
                    die();
                 }
              }
-             $profilepath = $file_name;
+             $profile_new = $file_name;
     }
         //end of profile validation
 
 
         //daprtment set
 
-        $department = $_POST['department'];
+        $department_new = $_POST['department'];
         $entityid = $_SESSION['entityid'];
-        $gender = $_POST['gender'];
-        $amount = (int)$_POST['salary'];
+        $gender_new = $_POST['gender'];
+        $amount_new = (int)$_POST['salary'];
 
        
     
         //Database uploading 
         $insertdate = date("Y-m-d", strtotime($_POST['dob']));
         
-        // error($insertdate);
+        //Updated Date 
         $updated_at = date("Y-m-d H:i:s");
 
+        //First name Update 
 
-        //  $insertdate = DATE_FORMAT(,format);
-        // die(gettype($_POST['dob']));    
-
-
-        //Employee Data
-        $query1 = $conn->prepare("INSERT INTO employees (entity_id,first_name,last_name,email,passwords,gender,DOB,permissions,picture,updated_at) VALUES ($entityid, ?, ?, ?,?,'$gender','$insertdate',?,'$profilepath','$updated_at')");
-        $query1->bind_param("sssss", $fname, $lname, $email, $password, $permission);
-
-        $query1->execute();
-
-
-        if ($conn->error) {
-            error("Something Went Wrong");
-            die();
+        if($first_name != $fname_new){
+            $query1 = $conn->prepare("UPDATE employees SET first_name=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query1->bind_param("s", $fname_new);
+            $query1->execute();
+            $query1->store_result();
         }
-        $query1->store_result();
 
-        //Department Data
-        $sql = "SELECT employee_id FROM employees ORDER BY employee_id DESC LIMIT 1";
-        $result = mysqli_query($conn, $sql);
-        $table = mysqli_fetch_row($result);
-        $result->close();
-        $employee_id = (int)$table[0];
+        //lastname Update
 
-        $result = mysqli_query($conn, "SELECT department_id FROM departments WHERE department_name='$department' AND entity_id=$entityid");
-
-
-        if (mysqli_num_rows($result) > 0) {
-
-            $table = mysqli_fetch_row($result);
-            $department_id = $table[0];
+        if($last_name != $lname_new){
+            $query2 = $conn->prepare("UPDATE employees SET first_name=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query2->bind_param("s", $lname_new);
+            $query2->execute();
+            $query2->store_result();
         }
-        // die(echo($table[0]));
 
-        else {
-            $query2 = "INSERT INTO departments (department_name, entity_id) VALUES ('$department', $entityid)";
-            $result = mysqli_query($conn, $query2);
-
-            $sql = "SELECT department_id FROM departments WHERE department_name='$department' AND entity_id=$entityid ";
-            $result = mysqli_query($conn, $sql);
-            $table = mysqli_fetch_row($result);
-            $department_id = (int)$table[0];
+        if($last_name != $lname_new){
+            $query2 = $conn->prepare("UPDATE employees SET last_name=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query2->bind_param("s", $lname_new);
+            $query2->execute();
+            $query2->store_result();
         }
-        // Dapeartment id Inserting into Emplotyee Table
+
+        if($email != $email_old) {
+            $query3 = $conn->prepare("UPDATE employees SET email=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query3->bind_param("s", $email);
+            $query3->execute();
+            $query3->store_result();
+        }
+
+        if($password_new != $password_old) {
+
+
+            $query4 = $conn->prepare("UPDATE employees SET passwords=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query4->bind_param("s", $password_new);
+            $query4->execute();
+            $query4->store_result();
+        }
         
-        $sql = " UPDATE employees SET department_id=$department_id WHERE employee_id=$employee_id)";
-        $result = mysqli_query($conn, $sql);
-       
-        //Salaries insert 
+        if($gender_new != $gender) {
+            $query5 = $conn->prepare("UPDATE employees SET gender=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query5->bind_param("s", $gender_new);
+            $query5->execute();
+            $query5->store_result();
+        }
 
-        $query3 = "INSERT INTO salaries (amount,employee_id,department_id,updated_at) VALUES ($amount,$employee_id,$department_id,'$updated_at')";
-        $result = mysqli_query($conn, $query3);
+        if($picture != $profile_new && isset($profile_new)){
+            $query6 = $conn->prepare("UPDATE employees SET picture=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query6->bind_param("s", $profile_new);
+            $query6->execute();
+            $query6->store_result();
+        }
+        
+        if($DOB != $new_dob){
+            
+            $query7 = $conn->prepare("UPDATE employees SET DOB=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query7->bind_param("s", $new_dob);
+            $query7->execute();
+            $query7->store_result();
+        }
 
-        echo "<script>aleart.classList.remove('d-none')</script>";
+        if($permissions != $permission){            
 
+            $query8 = $conn->prepare("UPDATE employees SET permissions=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query8->bind_param("s", $permission);
+            $query8->execute();
+            $query8->store_result();
+        }
+
+        if($dep != $department_new){            
+
+            $query_dep =  mysqli_query($conn, "SELECT department_id FROM departments WHERE department_name='$department' AND entity_id=$entityid");
+
+            if (mysqli_num_rows($query_dep) > 0) {
+
+                $table = mysqli_fetch_row($query_dep);
+                $department_id = (int)$table[0];
+            }
+            else {
+               
+                $query9 = "INSERT INTO departments (department_name, entity_id) VALUES ('$department_new', $entityid)";
+                $result = mysqli_query($conn, $query9);    
+                
+                $query_dep =  mysqli_query($conn, "SELECT department_id FROM departments WHERE department_name='$department_new' AND entity_id=$entityid");
+                $table = mysqli_fetch_row($query_dep);
+                $department_id = (int)$table[0];
+            }
+
+
+            $query10 = $conn->prepare("UPDATE employees SET department_id=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query10->bind_param("i", $department_id);
+            $query10->execute();
+            $query10->store_result();
+
+        }
+        
+        //Salary Amount Update
+
+        if($amount_new != $sal_amount){
+            
+            $query11 = $conn->prepare("UPDATE salaries SET amount=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");
+            $query11->bind_param("i", $amount_new);
+            $query11->execute();
+            $query11->store_result();
+        }
+
+        echo "<script> 
+        mbox.classList.add('d-none');
+        sbox.classList.remove('d-none');
+        add_green.classList.remove('d-none');
+        </script>"; 
+        
 
 
     endif;

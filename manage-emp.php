@@ -34,6 +34,8 @@ if (isset($_SESSION["userid"])) {
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
 </head>
 
 <body>
@@ -63,7 +65,7 @@ if (isset($_SESSION["userid"])) {
                     <ul class="navbar-nav">
                         <li class="nav-item text-white dropdown mx-3">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                                aria-expanded="true">
                                 <i class="fa-solid fa-user mx-3"></i>
                                 <?php echo ($_SESSION["username"]); ?>
                             </a>
@@ -73,7 +75,7 @@ if (isset($_SESSION["userid"])) {
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="#">Log Out</a></li>
+                                <li><a id="logout" class="dropdown-item" href="#">Log Out</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -164,10 +166,10 @@ if (isset($_SESSION["userid"])) {
 
                         ?>
                         <td><?php echo $no_Task;?></td>
-                        <td><a href="editemployee.php?id=<?php echo $data['employee_id'];?>"><button type="button" class="btn btn-primary me-2">Edit</button></a><button type="button"
-                                class="btn btn-danger">Delete</button></td>
+                        <td id="td<?php echo $data['employee_id'];?>"><a href="editemployee.php?id=<?php echo $data['employee_id'];?>" id="anchor<?php echo $data['employee_id'];?>" ><button type="button" class="btn btn-primary me-2">Edit</button></a><button type="button"
+                        onClick="checkId(this)"   class="btn btn-danger">Delete</button></td>
                     </tr>
-<?php
+    <?php
                    $sn++;
                      }
                     }
@@ -177,13 +179,37 @@ if (isset($_SESSION["userid"])) {
             </table>
         </div>
     </div>
-
     <script>
         $(document).ready(function () {
             $('#employeetable ').DataTable();
         });
     </script>
+    <script>
 
+$(document).ready(function () {
+
+    $("#logout").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "logout.php",
+            data: {
+              logout : "true"
+            },
+            cache: false,
+            success: function (data) {
+                console.log("Log out Done")
+              window.location.href = "/login.php";
+            },
+            error: function () {
+                console.log("Error Found")
+            }
+        });
+    });
+});
+
+</script>
+    <script src="Assets/script.js"></script>
 
 </body>
 

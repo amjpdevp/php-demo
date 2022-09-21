@@ -55,7 +55,7 @@ if (isset($_SESSION["userid"])) {
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item" href="#">Log Out</a></li>
+                                    <li><a class="dropdown-item" id="logout">Log Out</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -109,7 +109,7 @@ if (isset($_SESSION["userid"])) {
                 </div> <!-- End of Gender div   -->
                 <div class="form-group my-3">
                     <label for="dob">Date Of Birth</label>
-                    <input type="date" class="form-control" id="exampleInputfirstname" name="dob">
+                    <input type="date" class="form-control" id="dob" name="dob">
                 </div>
                 <div class="d-flex my-3">
                     <p>Permission :</p>
@@ -172,6 +172,31 @@ if (isset($_SESSION["userid"])) {
             var nof = document.getElementById('nof');
             var aleart = document.getElementById('add_green')
         </script>
+        <script>
+
+
+
+    $("#logout").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "logout.php",
+            data: {
+              logout : "true"
+            },
+            cache: false,
+            success: function (data) {
+            console.log("Log out Done")
+            window.location.href = "/login.php";
+            },
+            error: function () {
+                console.log("Error Found")
+            }
+        });
+    });
+
+
+</script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     </body>
 
