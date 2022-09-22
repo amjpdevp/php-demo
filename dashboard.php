@@ -2,7 +2,7 @@
 session_start();
 if (isset($_SESSION["userid"])) {
     if (!boolval($_SESSION["isadmin"])) {
-        header("Location: /login.php");
+        header("Location: /profile.php");
     }
 
 require('dbconfig.php');

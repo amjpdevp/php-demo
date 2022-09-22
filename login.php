@@ -99,9 +99,30 @@ if (isset($_POST['submit'])) :
         $res2 = $conn->prepare("SELECT email,passwords FROM employees WHERE email=? AND passwords=?");
         $res2->bind_param("ss", $email, $password);
         $res2->execute();
+        
 
         if ($res2->fetch()) {
-            error("Employee login");
+            $res2->close();
+        $sql = "SELECT * FROM employees WHERE email='$email' ";
+        $result = mysqli_query($conn,$sql);
+        $data = mysqli_fetch_row($result);
+        
+        session_start();
+       // Array ( [0] => 25 [1] => 7 [2] => Jeff [3] => Bezos [4] => jeff@amazon.com [5] => 7440da479f6533e79ab58fc153307c3b [6] => male [7] => 2004-01-10 [8] => {"add":true,"edit":true,"delete":true} [9] => jeffprofile.png [10] => 2022-09-20 16:05:33 [11] => 2022-09-22 09:33:46 [12] => 8 )
+       
+       $_SESSION['userid'] = $data[0];
+       $_SESSION['isadmin'] = false;      
+       $_SESSION['profile'] = $data[9];
+       $_SESSION["entityid"] = $data[1];
+       $_SESSION["username"] = $data[2];
+       $_SESSION["department_id"] = $data[12];     
+
+       header("Location: /profile.php");
+        error(print_r($data));
+        die;
+        
+       
+
         } else {
             error("Login fail");
         }

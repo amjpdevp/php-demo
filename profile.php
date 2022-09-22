@@ -1,5 +1,32 @@
 
+<?php
+session_start();
+if (isset($_SESSION["userid"])) {
+    if (boolval($_SESSION["isadmin"])) {
+        header("Location: /dashboard.php");
+        die;
+    }
 
+
+}
+else
+{
+    header("Location: /login.php");
+    die;
+}
+
+require('dbconfig.php');
+
+$entity_id = $_SESSION["entityid"];
+$sql = "SELECT entity_name FROM entities WHERE entity_id=$entity_id";
+$result = mysqli_query($conn,$sql);
+$data = mysqli_fetch_row($result);
+$enityname = $data[0];
+$username = $_SESSION["username"];
+$picture = $_SESSION["profile"]
+
+
+?>
 
 
 
@@ -24,7 +51,7 @@
       <nav id="main-navbar" class="navbar navbar-expand-lg  text-dark " style="background-color: #e3f2fd;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                Comapny 
+                <?php echo $enityname;?> 
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,8 +71,8 @@
                     <li class="nav-item text-white dropdown mx-3">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <i class="fa-solid fa-user mx-3"></i>
-                            Username
+                            <img src="Assets/Profile/<?php echo $picture; ?>" height="25" width="25" class="rounded-circle mx-3" alt="" srcset="">
+                            <?php echo $username;?>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Action</a></li>

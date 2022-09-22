@@ -61,6 +61,7 @@ if(mysqli_num_rows($result) > 0) {
         $daprtment_id  = (int)$data['department_id'];
         $email_old = $data['email'];
 
+
     }
 }else{
     header("Location: /manage-emp.php");
@@ -499,7 +500,7 @@ if(mysqli_num_rows($result) > 0) {
             $query3->store_result();
         }
 
-        if($password_new != $password_old) {
+        if($password_new != $password_old && isset($password_new)) {
 
 
             $query4 = $conn->prepare("UPDATE employees SET passwords=? ,updated_at='$updated_at' WHERE (employee_id=$employee_id);");

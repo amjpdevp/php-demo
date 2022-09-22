@@ -224,35 +224,7 @@ if (isset($_SESSION["userid"])) {
 
        //profile Picture validation 
 
-       if(isset($_FILES['profilepicture'])){
-        $errors= array();
-        $file_name = $_FILES['profilepicture']['name'];
-        $file_size =$_FILES['profilepicture']['size'];
-        $file_tmp =$_FILES['profilepicture']['tmp_name'];
-        $file_type=$_FILES['profilepicture']['type'];
-        $file_ext=strtolower(end(explode('.',$_FILES['profilepicture']['name'])));
-        
-        $extensions= array("jpeg","jpg","png");
-        
-        if(in_array($file_ext,$extensions)=== false){
-           error("extension not allowed, please choose a JPEG or PNG file.");
-           die;
-        }
-        
-        if($file_size > 1000000){
-           error("File size must be less than 1 MB Size");
-           die();
-        }
-        
-        if(empty($errors)==true){
-           move_uploaded_file($file_tmp,"Assets/Profile/".$file_name);
-          
-        }else{
-           error("Something Wrong");
-           die();
-        }
-     }
-     $profilepath = $file_name;
+       
       
 
 
@@ -324,9 +296,6 @@ if (isset($_SESSION["userid"])) {
             die();
         }
 
-
-        //STR_TO_DATE($est_date , '%d-%m-%Y')
-
         //Permission convert Into JSON 
 
         $permission = array();
@@ -346,6 +315,35 @@ if (isset($_SESSION["userid"])) {
  
         //end of profile validation
 
+        if(isset($_FILES['profilepicture'])){
+            $errors= array();
+            $file_name = $_FILES['profilepicture']['name'];
+            $file_size =$_FILES['profilepicture']['size'];
+            $file_tmp =$_FILES['profilepicture']['tmp_name'];
+            $file_type=$_FILES['profilepicture']['type'];
+            $file_ext=strtolower(end(explode('.',$_FILES['profilepicture']['name'])));
+            
+            $extensions= array("jpeg","jpg","png");
+            
+            if(in_array($file_ext,$extensions)=== false){
+               error("extension not allowed, please choose a JPEG or PNG file.");
+               die;
+            }
+            
+            if($file_size > 1000000){
+               error("File size must be less than 1 MB Size");
+               die();
+            }
+            
+            if(empty($errors)==true){
+               move_uploaded_file($file_tmp,"Assets/Profile/".$file_name);
+              
+            }else{
+               error("Something Wrong");
+               die();
+            }
+         }
+         $profilepath = $file_name;
 
         //daprtment set
 
