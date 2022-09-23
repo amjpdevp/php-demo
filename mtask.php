@@ -254,6 +254,31 @@ $permission_json = json_decode($permissions);
         crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="Assets/task.js"></script>
+    <script>
+
+$(document).ready(function () {
+
+    $("#logout").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "logout.php",
+            data: {
+              logout : "true"
+            },
+            cache: false,
+            success: function (data) {
+                console.log("Log out Done")
+              window.location.href = "/login.php";
+            },
+            error: function () {
+                console.log("Error Found")
+            }
+        });
+    });
+});
+
+</script>
 </body>
 
 </html>

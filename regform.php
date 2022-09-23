@@ -39,18 +39,6 @@
         <label for="eemail">Entity e-mail</label>
         <input type="email" class="form-control" id="exampleInputlastname" aria-describedby="emailHelp" name="eemail">
       </div>
-      <!-- <div class="form-check">
-        <input class="form-check-input" type="radio" name="utype" value="admin" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          Admin
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="utype" id="flexRadioDefault2" value="user" checked>
-        <label class="form-check-label" for="flexRadioDefault2">
-          User
-        </label>
-      </div> -->
       <button type="submit" class="my-2 btn btn-primary" value="submit" name="submit">Registration</button>
       <div class="mb-3 bg-danger text-white" id="nof"></div>
     </form>
@@ -100,7 +88,6 @@ if (isset($_POST['submit'])) :
   }
 
   if ($password == $_POST['cpassword']) {
-
 
     if (strlen($password) >= 6) {
       $password = md5($password);

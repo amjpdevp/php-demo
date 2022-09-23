@@ -107,6 +107,11 @@ if (isset($_POST['submit'])) :
         $result = mysqli_query($conn,$sql);
         $data = mysqli_fetch_row($result);
         
+        if(!$data[13]){
+            error("Your Account is Deactivated");
+            die();
+        }
+
         session_start();
        // Array ( [0] => 25 [1] => 7 [2] => Jeff [3] => Bezos [4] => jeff@amazon.com [5] => 7440da479f6533e79ab58fc153307c3b [6] => male [7] => 2004-01-10 [8] => {"add":true,"edit":true,"delete":true} [9] => jeffprofile.png [10] => 2022-09-20 16:05:33 [11] => 2022-09-22 09:33:46 [12] => 8 )
        
@@ -118,7 +123,7 @@ if (isset($_POST['submit'])) :
        $_SESSION["department_id"] = $data[12];     
 
        header("Location: /profile.php");
-        error(print_r($data));
+    
         die;
         
        

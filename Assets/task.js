@@ -61,9 +61,8 @@ function getedittask(elem){
     var row = elem.parentNode.parentNode;
     var vararray = rowid.split("row");
     var taskid = parseInt(vararray[1]);
-    strdate = row.getElementsByClassName('date')[0].innerText;
-    date = new Date(strdate);
-    newdate = moment(date).format('yyyy-MM-DD');
+    strdate = row.getElementsByClassName('date')[0].innerText;   
+    newdate = strdate.split("/").reverse().join("-");
     document.getElementById("edittaskdate").value = newdate;
     picture = row.getElementsByClassName('image')[0].src;
     document.getElementById("editimg").src = picture;
@@ -76,7 +75,7 @@ function getedittask(elem){
         
         // set var from input 
         newdate =  document.getElementById("edittaskdate").value ;
-        var file_data = $('#edittaskimage').prop('files')[0];
+        file_data = $('#edittaskimage').prop('files')[0];
         newdesc = document.getElementById("edittaskdescribe").value ;
 
         //fill up object with value
@@ -88,8 +87,9 @@ function getedittask(elem){
         form_data.append("type","edit");
         form_data.append("taskid",taskid);
 
-        
+        console.log('console success')
         var response = ajaxtask(form_data);
+        
         setTimeout(function () {
             location.reload();
         }, 1000);
@@ -114,6 +114,41 @@ function getedittask(elem){
                 response = php_script_response
             }
         });
-
+     
+        
         return response;
+    }
+
+
+    function toggle(element){
+        var rowid = element.parentNode.parentNode.parentNode.id;
+        var vararray = rowid.split("row");
+        var empid = parseInt(vararray[1]);        
+        var val = element.checked;
+        if(val){
+            val = "active";
+        }
+        else
+        {
+            val = "deactive";
+        }
+        var  form_data =  new FormData();
+        form_data.append("employee",empid);
+        form_data.append("value",val);
+
+
+        $.ajax({
+            url: 'activeajax.php', // <-- point to server-side PHP script 
+            dataType: 'text',  // <-- what to expect back from the PHP script, if anything
+            cache: false,
+            contentType: false,
+            processData: false,
+
+            data: form_data,
+            type: 'post',
+            success: function (respose) {
+                console.log(respose)
+            }
+        });
+
     }

@@ -35,10 +35,12 @@ if (isset($_SESSION["userid"])) {
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+    <link rel="stylesheet" href="Assets/css/manageemp.css">
 </head>
 
 <body>
+
+    
     <header>
 
         <nav id="main-navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -88,7 +90,7 @@ if (isset($_SESSION["userid"])) {
     <?php ?>
     <div class="main d-flex justify-content-center">
 
-        <div class="container m-5 ">
+        <div class="container ">
             <h2 class="text-center my-2">Employees Of
                 <?php echo $_SESSION["entityname"];  ?>
             </h2>
@@ -105,6 +107,7 @@ if (isset($_SESSION["userid"])) {
                         <th scope="col">Salary</th>
                         <th scope="col">No. Of task</th>
                         <th scope="col">Action</th>
+                        <th scope="col">stat</th>
 
                     </tr>
                 </thead>
@@ -168,6 +171,13 @@ if (isset($_SESSION["userid"])) {
                         <td><?php echo $no_Task;?></td>
                         <td id="td<?php echo $data['employee_id'];?>"><a href="editemployee.php?id=<?php echo $data['employee_id'];?>" id="anchor<?php echo $data['employee_id'];?>" ><button type="button" class="btn btn-primary me-2">Edit</button></a><button type="button"
                         onClick="checkId(this)"   class="btn btn-danger">Delete</button></td>
+                        <td>
+                            <!-- Default checked -->
+                            <label class="switch">
+                            <input type="checkbox" onchange="toggle(this);" <?php if($data['active']){ echo "checked"; } ?>>
+                            <span class="slider round"></span>
+                            </label>
+                        </td>
                     </tr>
     <?php
                    $sn++;
@@ -210,6 +220,7 @@ $(document).ready(function () {
 
 </script>
     <script src="Assets/script.js"></script>
+    <script src="Assets/task.js"></script>
 
 </body>
 
